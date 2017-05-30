@@ -48,11 +48,11 @@ public class FileUtil {
     }
 
     // 파일에쓰기
-    public static void write(Context context, String content) {
+    public static void write(Context context, String filename, String content) {
 
         // 1. 스트림을 열거나 파일을 생성하거나
         try {
-            FileOutputStream fos = context.openFileOutput("memofile.txt", MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(filename, MODE_PRIVATE);
             fos.write(content.getBytes());
             fos.close();
         } catch (Exception e) {
