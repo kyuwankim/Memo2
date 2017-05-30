@@ -4,8 +4,10 @@ import android.content.Context;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStreamReader;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -44,6 +46,29 @@ public class FileUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return result;
+    }
+
+    // 파일 첫줄만 읽기
+    public static final String readFirstLine(Context context, String s) {
+        String result = "";
+        try {
+            // 1. 스트림을 열고
+            FileInputStream fis = context.openFileInput(s);
+            // BufferedReader 담기기 위해서 Stream을 Reader에서 읽을 수 있는 형태로 변경
+            InputStreamReader isr = new InputStreamReader(fis);
+            // 2. 텍스트 파일을 읽기 위한 Reader 계열의 버퍼에 담고
+            BufferedReader br = new BufferedReader(isr);
+            // 3. 한줄을 읽은 후 result에 저장하고
+            result = br.readLine();
+            // 4. 스트림을 닫는다
+            br.close();
+            isr.close();
+            fis.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return result;
     }
 

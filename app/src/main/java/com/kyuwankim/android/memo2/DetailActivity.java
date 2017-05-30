@@ -13,7 +13,7 @@ import static com.kyuwankim.android.memo2.R.id.editText;
 
 public class DetailActivity extends AppCompatActivity {
     private static final String TAG = "DetailActivity";
-    private static final String DOC_KEY_NAME = "document_id";
+    public static final String DOC_KEY_NAME = "document_id";
 
     FloatingActionButton btnsave;
     EditText et;
