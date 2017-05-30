@@ -12,6 +12,9 @@ import com.kyuwan.android.util.FileUtil;
 import static com.kyuwankim.android.memo2.R.id.editText;
 
 public class DetailActivity extends AppCompatActivity {
+    private static final String TAG = "DetailActivity";
+    private static final String DOC_KEY_NAME = "document_id";
+
     FloatingActionButton btnsave;
     EditText et;
 
@@ -28,35 +31,44 @@ public class DetailActivity extends AppCompatActivity {
         // null에서는 getString  호출 시 Exception이 발생한다
         // 따라서 bundle의 null여부를 체크해준다
         if (bundle != null) {
-            document_id = bundle.getString("document_id");
+            document_id = bundle.getString(DOC_KEY_NAME);
         }
 
+        loadContent();
 
         et = (EditText) findViewById(editText);
         btnsave = (FloatingActionButton) findViewById(R.id.fab);
-        String memo = FileUtil.read(this, "memofile.txt");
-        et.setText(memo);
+
 
         btnsave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 1. 컨텐츠 가져오기
-                String content = et.getText().toString();
-
-                // 2. 파일 이름을 생성한다
-                String filename = "MEMO" + System.nanoTime() + ".txt";
-                // document_id 가 있으면 파일을 새로 생성하지 않고 기존 이름을 사용해서 수정처리한다
-                if (!document_id.equals("")) {
-                    filename = document_id;
-                }
-
-                // 3. 컨텐츠를 파일에 저장
-                FileUtil.write(DetailActivity.this, filename, content);
-
+                writeContent();
             }
         });
     }
 
-    // 파일읽기
+    private void writeContent() {
+        // 1. 컨텐츠 가져오기
+        String content = et.getText().toString();
 
+        // 2. 파일 이름을 생성한다
+        String filename = "MEMO" + System.nanoTime() + ".txt";
+        // document_id 가 있으면 파일을 새로 생성하지 않고 기존 이름을 사용해서 수정처리한다
+        if (!document_id.equals("")) {
+            filename = document_id;
+        }
+
+        // 3. 컨텐츠를 파일에 저장
+        FileUtil.write(this, filename, content);
+
+    }
+
+
+    private void loadContent() {
+        if (!document_id.equals("")) {
+            String memo = FileUtil.read(this, document_id);
+            et.setText(memo);
+        }
+    }
 }
